@@ -12,12 +12,13 @@ const getCatImages = (state = initialState, { type, payload }) => {
         ...state,
         isFetching: true,
       };
-    case TYPES.LOAD_IMAGES_SUCCESS:
+    case TYPES.LOAD_IMAGES_SUCCESS: {
       return {
         ...state,
         isFetching: false,
         data: payload,
       };
+    }
     case TYPES.LOAD_IMAGES_FAILURE:
       return {
         ...state,

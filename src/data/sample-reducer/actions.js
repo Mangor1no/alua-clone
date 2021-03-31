@@ -3,15 +3,15 @@ import sampleAPI from 'api/sampleAPI';
 import * as TYPES from './types';
 import { sampleDataSelector } from './selectors';
 
-export const fetchCatImages = () => async (dispatch, getState) => {
+export const fetchCatImages = (currentPage) => async (dispatch, getState) => {
   try {
     dispatch({ type: TYPES.LOAD_IMAGES_REQUEST });
 
-    const response = await sampleAPI.getRandomImage();
+    const response = await sampleAPI.getRandomImage(currentPage);
 
     dispatch({
       type: TYPES.LOAD_IMAGES_SUCCESS,
-      payload: response?.data,
+      payload: response?.data?.results,
     });
   } catch (err) {
     dispatch({
@@ -21,15 +21,15 @@ export const fetchCatImages = () => async (dispatch, getState) => {
   }
 };
 
-export const fetchMoreCatImages = () => async (dispatch, getState) => {
+export const fetchMoreCatImages = (currentPage) => async (dispatch, getState) => {
   try {
     dispatch({ type: TYPES.LOAD_MORE_IMAGES_REQUEST });
 
-    const response = await sampleAPI.getRandomImage();
+    const response = await sampleAPI.getRandomImage(currentPage);
 
     dispatch({
       type: TYPES.LOAD_MORE_IMAGES_SUCCESS,
-      payload: response?.data,
+      payload: response?.data?.results,
     });
   } catch (err) {
     dispatch({

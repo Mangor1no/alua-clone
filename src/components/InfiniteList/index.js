@@ -1,69 +1,86 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { fetchMoreCatImages, fetchCatImages } from 'data/sample-reducer/actions';
 import { Masonry } from 'masonic';
 import ImageCards from 'components/ImageCards';
 import { useDispatch, useSelector } from 'react-redux';
-import { sampleDataSelector } from 'data/sample-reducer/selectors';
+import { sampleDataSelector, sampleIsFetchingSelector } from 'data/sample-reducer/selectors';
+import { AnimateSharedLayout } from 'framer-motion';
 
 const InfiniteList = (props) => {
-  const [loadMore, setLoadMore] = useState(true);
+  const currentPage = useRef(1);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchMoreCatImages());
-    setLoadMore(false);
-  }, [loadMore]);
-
   const images = useSelector(sampleDataSelector);
+  const isFetching = useSelector(sampleIsFetchingSelector);
+
+  const handleScrollFixed = (e) => async () => {
+    const el = e.target;
+    if (el.scrollTop + el.clientHeight === el.scrollHeight) {
+      currentPage.current += 1;
+      dispatch(fetchMoreCatImages(currentPage.current));
+    }
+  };
+
+  const handleScroll = (list) => async () => {
+    if (window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop) {
+      currentPage.current += 1;
+      dispatch(fetchMoreCatImages(currentPage.current));
+    }
+  };
 
   useEffect(() => {
-    dispatch(fetchCatImages());
+    dispatch(fetchCatImages(currentPage.current));
     const list = document.getElementById('list');
     if (props.scrollable) {
       // list has fixed height
-      list.addEventListener('scroll', (e) => {
-        const el = e.target;
-        if (el.scrollTop + el.clientHeight === el.scrollHeight) {
-          setLoadMore(true);
-        }
-      });
+      // eslint-disable-next-line no-undef
+      list.addEventListener('scroll', handleScrollFixed(e));
     } else {
       // list has auto height
-      window.addEventListener('scroll', () => {
-        if (window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop) {
-          setLoadMore(true);
-        }
-      });
+      window.addEventListener('scroll', handleScroll(list));
     }
+    return () => {
+      list.removeEventListener('scroll', handleScrollFixed);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  useEffect(() => {
-    const list = document.getElementById('list');
+  // useEffect(() => {
+  //   console.log(selectedId);
+  // }, [selectedId]);
 
-    if (list.clientHeight <= window.innerHeight && list.clientHeight) {
-      setLoadMore(true);
-    }
-  }, [props]);
+  // const handleClickOnCard = (id) => {
+  //   setSelectedId(id);
+  // };
+
+  // const CardWithClick = useCallback(
+  //   (imageData) => <ImageCards data={imageData.data} handleClickOnCard={handleClickOnCard} selectedId={selectedId}/>,
+  //   []
+  // );
 
   if (images)
     return (
-      <Masonry
-        // Provides the data for our grid items
-        items={images}
-        // Adds 8px of space between the grid cells
-        columnGutter={8}
-        // Set default column
-        columnCount={5}
-        // Pre-renders 5 windows worth of content
-        overscanBy={5}
-        // This is the grid item component
-        render={ImageCards}
-      >
-        {/* {images.map((image) => (
-          <ImageCards url={image.url} key={image.id} />
-        ))} */}
-      </Masonry>
+      <>
+        <AnimateSharedLayout type="crossfade">
+          <Masonry
+            className="focus:outline-none"
+            // Provides the data for our grid items
+            items={images}
+            // Adds 8px of space between the grid cells
+            columnGutter={8}
+            columnWidth={300}
+            // Pre-renders 5 windows worth of content
+            overscanBy={3}
+            // This is the grid item component
+            render={ImageCards}
+          />
+        </AnimateSharedLayout>
+        {isFetching && (
+          <div className="fa-3x">
+            <i className="fas fa-circle-notch fa-spin" />
+          </div>
+        )}
+      </>
     );
   return null;
 };

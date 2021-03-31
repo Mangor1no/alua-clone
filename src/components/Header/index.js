@@ -38,10 +38,10 @@ const BurgerButton = ({ navbarOpen }) => {
     },
     lineMiddle: {
       opacity: open ? 0 : 1,
-      transform: open ? 'translateX(8px)' : 'none',
+      // transform: open ? 'translateX(8px)' : 'none',
     },
     lineBottom: {
-      transform: open ? 'translateX(-1px) rotate(-45deg)' : 'none',
+      transform: open ? 'translateX(-1.5px) rotate(-45deg)' : 'none',
       transformOrigin: 'top left',
       marginTop: '5px',
     },
@@ -74,7 +74,7 @@ const Header = () => {
             </button>
           </div>
           <div className={navbarOpen ? 'flex flex-grow items-center' : 'lg:flex hidden'}>
-            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto font-systemSemiBold">
+            <ul className="flex flex-col lg:flex-row list-none lg:ml-auto font-systemBold">
               <li className="nav-item">
                 <a
                   className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75"
