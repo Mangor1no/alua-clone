@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js --mode development",
+    "start": "webpack serve --config webpack.dev.js --mode development --open",
     "build": "set NODE_ENV=production&& webpack --config webpack.prod.js --mode production",
     "build-w": "set NODE_ENV=development&& webpack --config webpack.prod.js --mode production --watch --progress",
     "preview": "http-server dist"

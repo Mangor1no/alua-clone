@@ -1,0 +1,7 @@
+jsconfig.json
+*.md
+package.json
+package-lock.json
+coverage/*
+build/*
+node_modules/*

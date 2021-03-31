@@ -1,13 +1,12 @@
 import React from 'react';
-import Image from 'components/Image/Image';
-import Buttons from 'components/Button/Buttons';
+import Home from 'pages/Home';
+import Header from 'components/Header';
 
 function App() {
   return (
     <div>
-      <div className="font-bold">Hello world!!</div>
-      <Buttons />
-      <Image />
+      <Header />
+      <Home />
     </div>
   );
 }

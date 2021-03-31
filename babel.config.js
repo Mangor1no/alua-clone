@@ -22,6 +22,7 @@ module.exports = {
           data: './src/data',
           images: './src/images',
           components: './src/components',
+          pages: './src/pages',
           constants: './src/constants',
           utils: './src/utils',
         },
