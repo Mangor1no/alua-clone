@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js --mode development --open",
+    "start": "webpack serve --mode development --open --config webpack.dev.js",
     "build": "set NODE_ENV=production&& webpack --config webpack.prod.js --mode production",
     "build-w": "set NODE_ENV=development&& webpack --config webpack.prod.js --mode production --watch --progress",
     "preview": "http-server dist"
@@ -15,6 +15,7 @@
   "dependencies": {
     "@babel/runtime": "7.13.10",
     "axios": "0.21.1",
+    "masonic": "^3.4.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-redux": "7.2.2",
@@ -31,6 +32,9 @@
     "@babel/plugin-transform-runtime": "7.13.10",
     "@babel/preset-env": "7.13.10",
     "@babel/preset-react": "7.12.13",
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
+    "@fortawesome/react-fontawesome": "0.1.14",
     "autoprefixer": "10.2.5",
     "babel-loader": "8.2.2",
     "babel-plugin-module-resolver": "4.1.0",
@@ -59,8 +63,10 @@
     "prettier": "2.2.1",
     "progress-bar-webpack-plugin": "2.1.0",
     "redux-devtools-extension": "2.13.9",
+    "sass": "1.32.8",
     "sass-loader": "11.0.1",
     "style-loader": "2.0.0",
+    "swiper": "6.5.2",
     "webpack": "5.24.4",
     "webpack-cli": "4.5.0",
     "webpack-dev-server": "3.11.2"

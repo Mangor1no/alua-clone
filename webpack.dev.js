@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ProgressBarPlugin = require('progress-bar-webpack-plugin');
 const chalk = require('chalk');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sass = require('sass');
 
 module.exports = {
   entry: './src/index.js',
@@ -29,14 +30,12 @@ module.exports = {
         },
       },
       {
-        test: /\.(scss|sass|css)$/i,
-        exclude: /node_modules/,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-          'postcss-loader',
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true, implementation: sass } },
         ],
       },
       {
@@ -72,7 +71,7 @@ module.exports = {
       template: './public/index.html',
     }),
     new ProgressBarPlugin({
-      format: `Building all your dreams... [:bar] ${chalk.green.bold(
+      format: `${chalk.yellowBright.bold('Building all your dreams...')} [:bar] ${chalk.green.bold(
         ':percent'
       )} (:elapsed seconds)`,
       clear: false,

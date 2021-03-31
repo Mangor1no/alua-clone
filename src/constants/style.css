@@ -1,0 +1,40 @@
+@font-face {
+  font-family: 'Inter var';
+  src: url('../assets/fonts/Inter-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Inter var Bold';
+  src: url('../assets/fonts/Inter-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'Inter var Semi Bold';
+  src: url('../assets/fonts/Inter-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Inter var Medium';
+  src: url('../assets/fonts/Inter-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Inter var Light';
+  src: url('../assets/fonts/Inter-Light.ttf');
+}
+
+:root {
+  /* font-size: 14px; */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5); /* Black see-through */
+  color: #f1f1f1;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  text-align: center;
+}

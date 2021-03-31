@@ -25,13 +25,11 @@ module.exports = {
       },
       {
         test: /\.(scss|sass|css)$/i,
-        exclude: /node_modules/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-          'postcss-loader',
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } },
         ],
       },
       {
@@ -67,7 +65,7 @@ module.exports = {
       template: './public/index.html',
     }),
     new ProgressBarPlugin({
-      format: `Building all your dreams... [:bar] ${chalk.green.bold(
+      format: `${chalk.yellowBright.bold('Building all your dreams...')} [:bar] ${chalk.green.bold(
         ':percent'
       )} (:elapsed seconds)`,
       clear: false,

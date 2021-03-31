@@ -5,20 +5,37 @@ const initialState = {
   data: null,
 };
 
-const sendSampleRequest = (state = initialState, { type, payload }) => {
+const getCatImages = (state = initialState, { type, payload }) => {
   switch (type) {
-    case TYPES.SAMPLE_SEND_REQUEST:
+    case TYPES.LOAD_IMAGES_REQUEST:
       return {
         ...state,
         isFetching: true,
       };
-    case TYPES.SAMPLE_SEND_SUCCESS:
+    case TYPES.LOAD_IMAGES_SUCCESS:
       return {
         ...state,
         isFetching: false,
         data: payload,
       };
-    case TYPES.SAMPLE_SEND_FAILURE:
+    case TYPES.LOAD_IMAGES_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+      };
+    case TYPES.LOAD_MORE_IMAGES_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case TYPES.LOAD_MORE_IMAGES_SUCCESS: {
+      return {
+        ...state,
+        isFetching: false,
+        data: [...state.data, ...payload],
+      };
+    }
+    case TYPES.LOAD_MORE_IMAGES_FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -28,4 +45,4 @@ const sendSampleRequest = (state = initialState, { type, payload }) => {
   }
 };
 
-export default sendSampleRequest;
+export default getCatImages;
