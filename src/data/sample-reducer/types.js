@@ -1,0 +1,3 @@
+export const SAMPLE_SEND_REQUEST = 'sample:SAMPLE_SEND_REQUEST';
+export const SAMPLE_SEND_SUCCESS = 'sample:SAMPLE_SEND_SUCCESS';
+export const SAMPLE_SEND_FAILURE = 'sample:SAMPLE_SEND_FAILURE';
