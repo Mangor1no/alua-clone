@@ -4,8 +4,12 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import styles from './styles.module.scss';
+// import CardLoader from './CardLoader';
 
-const ImageCards = ({ data: { id, alt_description, urls } }) => {
+const ImageCards = ({
+  width,
+  data: { id, alt_description, urls, width: imageWidth, height: imageHeight },
+}) => {
   const [selectedId, setSelectedId] = useState(null);
   const handleClick = (imageId) => () => {
     setSelectedId(imageId);
@@ -20,11 +24,15 @@ const ImageCards = ({ data: { id, alt_description, urls } }) => {
         tabIndex="0"
         aria-hidden="true"
       >
+        {/* {urls.regular && <CardLoader />} */}
         <motion.img
           layoutId={id}
           src={urls.regular}
           alt={alt_description}
-          className="w-full rounded-t-xl"
+          className="w-full rounded-xl object-cover"
+          width={(imageWidth / width) * imageWidth}
+          height={(imageWidth / width) * imageHeight}
+          style={{ minHeight: 200 }}
         />
         <div className="px-4 py-4">
           <p>Meo meo</p>

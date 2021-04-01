@@ -5,6 +5,7 @@ import ImageCards from 'components/ImageCards';
 import { useDispatch, useSelector } from 'react-redux';
 import { sampleDataSelector, sampleIsFetchingSelector } from 'data/sample-reducer/selectors';
 import { AnimateSharedLayout } from 'framer-motion';
+import ListLoader from './ListLoader';
 
 const InfiniteList = (props) => {
   const currentPage = useRef(1);
@@ -45,19 +46,6 @@ const InfiniteList = (props) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   console.log(selectedId);
-  // }, [selectedId]);
-
-  // const handleClickOnCard = (id) => {
-  //   setSelectedId(id);
-  // };
-
-  // const CardWithClick = useCallback(
-  //   (imageData) => <ImageCards data={imageData.data} handleClickOnCard={handleClickOnCard} selectedId={selectedId}/>,
-  //   []
-  // );
-
   if (images)
     return (
       <>
@@ -66,18 +54,19 @@ const InfiniteList = (props) => {
             className="focus:outline-none"
             // Provides the data for our grid items
             items={images}
-            // Adds 8px of space between the grid cells
-            columnGutter={8}
+            // Adds 16px of space between the grid cells
+            columnGutter={16}
             columnWidth={300}
             // Pre-renders 5 windows worth of content
-            overscanBy={3}
+            overscanBy={Infinity}
             // This is the grid item component
             render={ImageCards}
+            itemHeightEstimate={500}
           />
         </AnimateSharedLayout>
         {isFetching && (
-          <div className="fa-3x">
-            <i className="fas fa-circle-notch fa-spin" />
+          <div className="w-full">
+            <ListLoader />
           </div>
         )}
       </>
