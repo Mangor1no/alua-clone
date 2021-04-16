@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
-import sampleReducer from './sample-reducer/reducer';
+import masonryReducer from './masonry-reducer/reducer';
+import profileReducer from './profile-reducer/reducer';
 
 /**
  * Final Reducer
  */
 const appReducer = combineReducers({
-  sample: sampleReducer,
+  masonry: masonryReducer,
+  profile: profileReducer,
 });
 
 export default appReducer;

@@ -13,11 +13,14 @@ module.exports = {
   output: {
     filename: 'index.bundle.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/',
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 8080,
+    hot: true,
+    historyApiFallback: true,
   },
   module: {
     rules: [

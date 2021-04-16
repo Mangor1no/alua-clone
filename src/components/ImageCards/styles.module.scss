@@ -38,9 +38,22 @@ $XL: 1170px;
 }
 
 .cardImage {
-  height: 300px;
-  z-index: 999;
+  height: 100%;
+  max-height: 500px;
   @include Responsive(MD) {
-    height: 500px;
+    max-height: 700px;
   }
+}
+
+.image {
+  min-height: 200px;
+  max-height: 200px;
+  @include Responsive(SM) {
+    min-height: 600px;
+    max-height: 600px;
+  }
+}
+
+.test {
+  max-height: calc(100% - 200px);
 }

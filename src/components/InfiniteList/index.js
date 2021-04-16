@@ -1,71 +1,95 @@
-import React, { useEffect, useRef } from 'react';
-import { fetchMoreCatImages, fetchCatImages } from 'data/sample-reducer/actions';
-import { Masonry } from 'masonic';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { fetchMoreMasonryImages, fetchMasonryImages } from 'data/masonry-reducer/actions';
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 import ImageCards from 'components/ImageCards';
 import { useDispatch, useSelector } from 'react-redux';
-import { sampleDataSelector, sampleIsFetchingSelector } from 'data/sample-reducer/selectors';
+import {
+  masonryDataSelector,
+  masonryIsFetchingSelector,
+  masonryAllowLoadMore,
+  masonryCurrentPage,
+} from 'data/masonry-reducer/selectors';
 import { AnimateSharedLayout } from 'framer-motion';
 import ListLoader from './ListLoader';
 
-const InfiniteList = (props) => {
-  const currentPage = useRef(1);
-
+const InfiniteList = ({ isMasonry, toggleScroll }) => {
   const dispatch = useDispatch();
-  const images = useSelector(sampleDataSelector);
-  const isFetching = useSelector(sampleIsFetchingSelector);
-
-  const handleScrollFixed = (e) => async () => {
-    const el = e.target;
-    if (el.scrollTop + el.clientHeight === el.scrollHeight) {
-      currentPage.current += 1;
-      dispatch(fetchMoreCatImages(currentPage.current));
-    }
-  };
-
-  const handleScroll = (list) => async () => {
-    if (window.scrollY + window.innerHeight === list.clientHeight + list.offsetTop) {
-      currentPage.current += 1;
-      dispatch(fetchMoreCatImages(currentPage.current));
-    }
-  };
+  const images = useSelector(masonryDataSelector);
+  const isFetching = useSelector(masonryIsFetchingSelector);
+  const allowLoadMore = useSelector(masonryAllowLoadMore);
+  const currentPage = useSelector(masonryCurrentPage);
 
   useEffect(() => {
-    dispatch(fetchCatImages(currentPage.current));
-    const list = document.getElementById('list');
-    if (props.scrollable) {
-      // list has fixed height
-      // eslint-disable-next-line no-undef
-      list.addEventListener('scroll', handleScrollFixed(e));
+    if (images) {
+      dispatch(fetchMoreMasonryImages(currentPage));
     } else {
-      // list has auto height
-      window.addEventListener('scroll', handleScroll(list));
+      dispatch(fetchMasonryImages(currentPage));
     }
-    return () => {
-      list.removeEventListener('scroll', handleScrollFixed);
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
+
+  const observer = useRef();
+  const lastBookElementRef = useCallback(
+    (node) => {
+      if (isFetching) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(async (entries) => {
+        if (entries[0].isIntersecting && allowLoadMore) {
+          dispatch(fetchMoreMasonryImages(currentPage));
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isFetching, allowLoadMore]
+  );
+
+  const renderList = () => {
+    if (isMasonry) {
+      return (
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 640: 2, 768: 3, 1024: 4, 1280: 5 }}>
+          <Masonry gutter="18px">
+            {images.map((image, index) => {
+              return (
+                // eslint-disable-next-line react/no-array-index-key
+                <div key={`${image.id}_${index}`} ref={lastBookElementRef} className="align-bottom">
+                  <ImageCards
+                    id={image.id}
+                    blur_hash={image.blur_hash}
+                    alt_description={image.alt_description}
+                    urls={image.urls}
+                    width={image.width}
+                    height={image.height}
+                    user={image.user}
+                    toggleScroll={toggleScroll}
+                  />
+                </div>
+              );
+            })}
+          </Masonry>
+        </ResponsiveMasonry>
+      );
+    }
+    return images.map((image) => (
+      <div key={image.id} ref={lastBookElementRef} className="align-bottom">
+        <ImageCards
+          id={image.id}
+          blur_hash={image.blur_hash}
+          alt_description={image.alt_description}
+          urls={image.urls}
+          width={image.width}
+          height={image.height}
+          user={image.user}
+          toggleScroll={toggleScroll}
+        />
+      </div>
+    ));
+  };
 
   if (images)
     return (
       <>
-        <AnimateSharedLayout type="crossfade">
-          <Masonry
-            className="focus:outline-none"
-            // Provides the data for our grid items
-            items={images}
-            // Adds 16px of space between the grid cells
-            columnGutter={16}
-            columnWidth={300}
-            // Pre-renders 5 windows worth of content
-            overscanBy={Infinity}
-            // This is the grid item component
-            render={ImageCards}
-            itemHeightEstimate={500}
-          />
-        </AnimateSharedLayout>
+        <AnimateSharedLayout type="crossfade">{renderList()}</AnimateSharedLayout>
         {isFetching && (
-          <div className="w-full">
+          <div className="w-full mt-5">
             <ListLoader />
           </div>
         )}
@@ -74,4 +98,4 @@ const InfiniteList = (props) => {
   return null;
 };
 
-export default InfiniteList;
+export default React.memo(InfiniteList);

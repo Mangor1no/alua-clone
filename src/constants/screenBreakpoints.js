@@ -1,6 +1,15 @@
 export const SCREEN_BREAKPOINTS = {
-  xs: 480,
-  sm: 768,
-  md: 1024,
-  lg: 1170,
+  sm: 640,
+  // => @media (min-width: 640px) { ... }
+
+  md: 768,
+  // => @media (min-width: 768px) { ... }
+
+  lg: 1024,
+  // => @media (min-width: 1024px) { ... }
+
+  xl: 1280,
+  // => @media (min-width: 1280px) { ... }
+
+  '2xl': 1536,
 };

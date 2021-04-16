@@ -1,47 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import ContentLoader from 'react-content-loader';
 import { useWindowSize } from '@react-hook/window-size';
-import { SCREEN_BREAKPOINTS } from 'constants/screenBreakpoints';
+import calculateMansoryColumn from 'constants/calculateMansoryColumn';
 
 const ListLoader = () => {
-  const [column, setColumn] = useState(1);
-  const [viewBoxWidth, setViewBoxWidth] = useState(120);
+  const [loaderColumn, setLoaderColumn] = useState(1);
+  const [loaderViewBoxWidth, setLoaderViewBoxWidth] = useState(120);
 
   const [width] = useWindowSize();
 
   useEffect(() => {
-    switch (true) {
-      case width >= SCREEN_BREAKPOINTS.xs && width < SCREEN_BREAKPOINTS.sm: {
-        setColumn(2);
-        setViewBoxWidth(240);
-        break;
-      }
-      case width >= SCREEN_BREAKPOINTS.sm && width < SCREEN_BREAKPOINTS.md: {
-        setColumn(3);
-        setViewBoxWidth(360);
-        break;
-      }
-      case width >= SCREEN_BREAKPOINTS.md && width < SCREEN_BREAKPOINTS.lg: {
-        setColumn(4);
-        setViewBoxWidth(480);
-        break;
-      }
-      case width >= SCREEN_BREAKPOINTS.lg: {
-        setColumn(5);
-        setViewBoxWidth(600);
-        break;
-      }
-      default: {
-        setColumn(1);
-        setViewBoxWidth(120);
-        break;
-      }
-    }
+    const mansoryColumn = calculateMansoryColumn({ width });
+    const { column, viewBoxWidth } = mansoryColumn;
+    setLoaderColumn(column);
+    setLoaderViewBoxWidth(viewBoxWidth);
   }, [width]);
 
   const renderSkeleton = () => {
-    console.log('column', column);
-    switch (column) {
+    switch (loaderColumn) {
       case 1: {
         return (
           <>
@@ -125,7 +101,7 @@ const ListLoader = () => {
   return (
     <ContentLoader
       speed={2}
-      viewBox={`0 0 ${viewBoxWidth} 600`}
+      viewBox={`0 0 ${loaderViewBoxWidth} 600`}
       backgroundColor="#f3f3f3"
       foregroundColor="#ecebeb"
     >

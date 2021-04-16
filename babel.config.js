@@ -11,6 +11,7 @@ module.exports = {
     '@babel/preset-react',
   ],
   plugins: [
+    '@babel/plugin-proposal-class-properties',
     [
       'module-resolver',
       {
@@ -25,6 +26,7 @@ module.exports = {
           pages: './src/pages',
           constants: './src/constants',
           utils: './src/utils',
+          routes: './src/routes',
         },
         extensions: ['.js', '.jsx', '.es', '.es6', '.mjs'],
       },
